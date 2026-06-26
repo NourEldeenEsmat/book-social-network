@@ -1,0 +1,31 @@
+<div class="container-fluid card login-container">
+  <app-loader-componnent></app-loader-componnent>
+  <h3 class="text-center">Login</h3>
+  <hr />
+  <div class="alert alert-danger" role="alert" *ngIf="errorMsgs.length > 0">
+    <p *ngFor="let errorMsg of errorMsgs">{{ errorMsg }}</p>
+  </div>
+  <div class="mb-3">
+    <label for="login" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="login"
+      [(ngModel)]="authRequest.email"
+      placeholder="example@name.com"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="password" [(ngModel)]="authRequest.password" />
+  </div>
+  <div class="d-flex justify-content-between mb-3">
+    <button type="button" class="btn btn-primary" (click)="login()">
+      <em class="fas fa-sign-in-alt d-flex " style="width: max-content;">&nbsp;Login</em>
+    </button> 
+    <div class="d-flex">
+      Don't have an account?&nbsp;
+      <button type="button" class="btn btn-link" (click)="register()">Register</button>
+    </div>
+  </div>
+</div>

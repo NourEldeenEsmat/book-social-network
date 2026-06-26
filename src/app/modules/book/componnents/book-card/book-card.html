@@ -1,0 +1,37 @@
+<div class="card" style="width: 20rem; height: 450px">
+  <div class="card">
+    <img class="card-img-top" height="200" [src]="bookCover" alt="" />
+  </div>
+  <div class="card-body">
+    <h5 class="card-title fs-6 text-nowrap fw-bold mb-2 overflow-hidden">
+      <i class="fa-solid fa-book"></i>&nbsp;{{ book.title }}
+    </h5>
+    <hr />
+    <h5 class="card-subtitle fs-6 text-secoundary mb-2">
+      <i class="fa-solid fa-user-check"></i>&nbsp;{{ book.authorName }}
+    </h5>
+    <h6 class="card-subtitle fs-6 text-secoundary mb-2">
+      <i class="fa-solid fa-code"></i>&nbsp;{{ book.isbn }}
+    </h6>
+    <h6 class="card-subtitle fs-6 text-secoundary mb-2">
+      <i class="fa-solid fa-user"></i>&nbsp;{{ book.owner }}
+    </h6>
+    <hr />
+    <p class="card-text overflow-hidden" style="height: 20px">{{ book.synopsis }}</p>
+  </div>
+  <div class="card-footer d-flex gap-2 justify-content-sm-between align-items-center">
+    <div class="d-flex gap-1">
+      <app-rate [rate]="book.rate||0"></app-rate> <span class="fw-bold" *ngIf="book.rate || 0 > 0">{{book.rate}} stars</span>
+    </div>
+    <div class="d-flex gap-2" *ngIf="!manage">
+      <i (click)="onShowDetails()" class="fas fa-circle-info text-primary"></i>
+      <i (click)="onBorrow()" class="fas fa-list-check text-primary" [class.disabled]="isBorrowed"></i>
+      <i (click)="onAddToWaitingList()" class="fas fa-heart text-danger"></i>
+    </div>
+    <div class="d-flex gap-2" *ngIf="manage">
+      <i (click)="onEdit()" class="fas fa-edit text-primary"></i>
+      <i (click)="onShare()" class="fas fa-share-nodes text-primary"></i>
+      <i (click)="onArchive()" class="fas fa-archive text-danger"></i>
+    </div>
+  </div>
+</div>

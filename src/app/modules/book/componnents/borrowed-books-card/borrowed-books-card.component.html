@@ -1,0 +1,37 @@
+<div
+  class="card d-flex flex-row mt-2 justify-content-between overflow-hidden"
+  style="height: 60px"
+>
+  <span class="card-title m-3 w-25 overflow-hidden">{{
+    historyElement.title
+  }}</span>
+  <span class="card-subtitle m-3">{{ historyElement.sbin }}</span>
+
+  <span class="card-header">{{ historyElement.authorName }}</span>
+
+  <span class="card-footer d-flex justify-content-between w-25">
+    <app-rate [rate]="historyElement.rate || 0"></app-rate>
+    <i
+      *ngIf="!historyElement.returned && !isReturnedList"
+      class="fas fa-rotate-left"
+      style="color: blue; cursor: pointer"
+      (click)="returnBook(historyElement.id)"
+    ></i>
+    <i
+      *ngIf="historyElement.returned && !isReturnedList"
+      class="fas fa-check-double"
+      style="color: green"
+    ></i>
+    <i
+      *ngIf="!historyElement.returnApproved && isReturnedList"
+      class="fas fa-check-double"
+      style="cursor: pointer"
+      (click)="returnBook(historyElement.id)"
+    ></i>
+    <i
+      *ngIf="historyElement.returnApproved && isReturnedList"
+      class="fas fa-check-double"
+      style="color: blue"
+    ></i>
+  </span>
+</div>

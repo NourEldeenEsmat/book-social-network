@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary position-fixed w-100" style="z-index: 1000;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)">Book Network</a>
+    <!-- burger -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/books">
+            <i class="fas fa-home-alt"></i>&nbsp;Home</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/my-books">
+            <i class="fas fa-book"></i>&nbsp;My Books</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/my-waiting-list">
+            <i class="fas fa-list"></i>&nbsp;Waiting List</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="./my-returned-books">
+            <i class="fas fa-forward"></i>&nbsp;My Returned Books</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="./borrowed-books">
+            <i class="fas fa-b"></i>&nbsp;Borrowed Books</a
+          >
+        </li>
+      </ul>
+      <form role="search" class="d-flex gap-2 alien-items-center">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="find a book"
+          aria-label="Search"
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+        />
+        <button class="btn btn-outline-success" type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+        <span>Welcome</span>
+        <span class="text-capitalize fw-bold">{{userName}}</span>
+        <button class="btn btn-link" type="button" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>

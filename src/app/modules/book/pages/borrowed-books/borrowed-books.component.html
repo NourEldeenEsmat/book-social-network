@@ -1,0 +1,86 @@
+<!-- <div
+  style="
+    position: sticky;
+    top: 60px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+  "
+  *ngIf="errorMessage"
+  class="alert"
+  [class.alert-danger]="isBorrowed === true"
+  [class.alert-success]="isBorrowed === false"
+>
+  <span>{{ errorMessage }}</span>
+  <i class="fas fa-close" style="cursor: pointer;" (click)="errorMessage=''"></i>
+</div> -->
+<h3 style="margin-top: 60px">Books List</h3>
+<hr />
+<app-loader-componnent></app-loader-componnent>
+
+<ng-container *ngIf="history; else loadingTpl" >
+  <div *ngIf="history.content?.length; else emptyTpl">
+    <div class="card flex-row p-3 d-flex fw-bold justify-content-between">
+      <span class="w-25">TITLE</span>
+      <span>SBIN</span>
+      <span>AUTHOR NAME</span>
+      <span>RATE</span>
+      <span>RETURN</span>
+    </div>
+    <div class="book-list">
+      <app-borrowed-books-card
+        *ngFor="let book of history.content"
+        [historyElement]="book"
+        (_return)="returnABook(book.id!)"
+      >
+      </app-borrowed-books-card>
+    </div>
+
+    <nav
+      aria-label="Page navigation"
+      style="
+        margin-top: 20px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+      "
+      *ngIf="(history.totalPages ?? 0) > 1"
+    >
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="page === 0" aria-current="page">
+          <a class="page-link" (click)="pervPage()"
+            ><i class="fas fa-backward-step"></i
+          ></a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="
+            let _ of [].constructor(history.totalPages ?? 0);
+            let i = index
+          "
+        >
+          <a class="page-link" [class.active]="page === i" (click)="goToPage(i)"
+            >Page {{ i + 1 }}</a
+          >
+        </li>
+        <li class="page-item" [class.disabled]="isLastPage()">
+          <a class="page-link" (click)="nextPage()"
+            ><i class="fas fa-forward-step"></i
+          ></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</ng-container>
+
+<ng-template #loadingTpl>
+  <div class="text-center py-4">Loading books...</div>
+</ng-template>
+
+<ng-template #emptyTpl>
+  <div class="text-center py-4">
+    <p>No books borrowed.</p>
+    <p *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</p>
+  </div>
+</ng-template>
