@@ -1,20 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ApiConfiguration } from '../../../../api/api-configuration';
-import { returnBook, getBorrowedBooks, getReturnedBooks } from '../../../../api/functions';
+import {
+  returnBook,
+  getBorrowedBooks,
+  getReturnedBooks,
+} from '../../../../api/functions';
 import { PageResponseBookHistoryResponse } from '../../../../api/models';
 import { LoaderService } from '../../../../common/loader/loader-serviec';
 import { NotificationService } from '../../../../common/Toast/notification-service';
-import { BorrowedBooksCardComponent } from "../../componnents/borrowed-books-card/borrowed-books-card.component";
-import { LoaderComponnent } from "../../../../common/loader/loader-componnent/loader-componnent";
+import { BorrowedBooksCardComponent } from '../../componnents/borrowed-books-card/borrowed-books-card.component';
+import { LoaderComponnent } from '../../../../common/loader/loader-componnent/loader-componnent';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-my-returned-books',
   standalone: true,
-  imports: [BorrowedBooksCardComponent, LoaderComponnent,CommonModule],
+  imports: [BorrowedBooksCardComponent, LoaderComponnent, CommonModule],
   templateUrl: './my-returned-books.component.html',
-  styleUrl: './my-returned-books.component.scss'
+  styleUrl: './my-returned-books.component.scss',
 })
 export class MyReturnedBooksComponent {
   constructor(
@@ -74,7 +78,8 @@ export class MyReturnedBooksComponent {
         this.loader.hide();
       },
       error: (err) => {
-        this.toast.show(err.error.error,"error");
+        this.toast.show(err.error.error, 'error');
+        this.loader.hide();
       },
     });
   }
