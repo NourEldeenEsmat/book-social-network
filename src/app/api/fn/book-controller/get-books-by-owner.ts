@@ -12,7 +12,6 @@ import { PageResponseBookResponse } from '../../models/page-response-book-respon
 export interface GetBooksByOwner$Params {
   page?: number;
   size?: number;
-  'owner-id': number;
 }
 
 export function getBooksByOwner(http: HttpClient, rootUrl: string, params: GetBooksByOwner$Params, context?: HttpContext): Observable<StrictHttpResponse<PageResponseBookResponse>> {
@@ -20,7 +19,6 @@ export function getBooksByOwner(http: HttpClient, rootUrl: string, params: GetBo
   if (params) {
     rb.query('page', params.page, {});
     rb.query('size', params.size, {});
-    rb.path('owner-id', params['owner-id'], {});
   }
 
   return http.request(
@@ -33,4 +31,4 @@ export function getBooksByOwner(http: HttpClient, rootUrl: string, params: GetBo
   );
 }
 
-getBooksByOwner.PATH = '/books/get_books_by_owner/{owner-id}';
+getBooksByOwner.PATH = '/books/get_books_by_owner';

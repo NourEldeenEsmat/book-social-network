@@ -7,31 +7,33 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface UpdateCover$Params {
   'book-id': number;
-      body?: {
-'file': Blob;
-}
+  body?: FormData;
 }
 
-export function updateCover(http: HttpClient, rootUrl: string, params: UpdateCover$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-}>> {
+export function updateCover(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateCover$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<{}>> {
   const rb = new RequestBuilder(rootUrl, updateCover.PATH, 'post');
   if (params) {
     rb.path('book-id', params['book-id'], {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<{
-      }>;
-    })
-  );
+  return http
+    .request(
+      rb.build({ responseType: 'json', accept: 'application/json', context }),
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<{}>;
+      }),
+    );
 }
 
 updateCover.PATH = '/books/cover/{book-id}';

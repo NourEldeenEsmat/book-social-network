@@ -495,7 +495,7 @@
         }
       }
     },
-    "/books/get_books_by_owner/{owner-id}": {
+    "/books/get_books_by_owner": {
       "get": {
         "tags": [
           "book-controller"
@@ -520,15 +520,6 @@
               "type": "integer",
               "format": "int32",
               "default": 10
-            }
-          },
-          {
-            "name": "owner-id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
             }
           }
         ],

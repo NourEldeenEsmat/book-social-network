@@ -27,6 +27,13 @@ const routes: Routes = [
             (m) => m.BorrowedBooksComponent,
           ),
       },
+      {
+        path: 'my-books',
+        loadComponent: () =>
+          import('./pages/my-owned-books/my-owned-books.component').then(
+            (m) => m.MyOwnedBooksComponent,
+          ),
+      },
     ],
   },
 ];

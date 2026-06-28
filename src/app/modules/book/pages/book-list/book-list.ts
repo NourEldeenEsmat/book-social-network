@@ -9,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoaderService } from '../../../../common/loader/loader-serviec';
 import { NotificationService } from '../../../../common/Toast/notification-service';
-import { LoaderComponnent } from "../../../../common/loader/loader-componnent/loader-componnent";
+import { LoaderComponnent } from '../../../../common/loader/loader-componnent/loader-componnent';
+import { MatDialog } from '@angular/material/dialog';
+import { BookDetailsComponent } from '../../componnents/book-details/book-details.component';
 
 @Component({
   standalone: true,
@@ -19,17 +21,6 @@ import { LoaderComponnent } from "../../../../common/loader/loader-componnent/lo
   styleUrls: ['./book-list.scss'],
 })
 export class BookList implements OnInit {
-  constructor(
-    private http: HttpClient,
-    private api: ApiConfiguration,
-    private loader: LoaderService,
-    private toast: NotificationService,
-  ) {}
-
-  ngOnInit(): void {
-    this.findallBooks();
-  }
-
   page: number = 0;
   size: number = 4;
   loading = false;
@@ -38,9 +29,21 @@ export class BookList implements OnInit {
   books!: Observable<StrictHttpResponse<PageResponseBookResponse>>;
   isBorrowed: boolean = false;
 
+  constructor(
+    private http: HttpClient,
+    private api: ApiConfiguration,
+    private loader: LoaderService,
+    private toast: NotificationService,
+    private dialog: MatDialog,
+  ) {}
+
+  ngOnInit(): void {
+    this.findallBooks();
+  }
+
   borrowBook(bookId: number) {
     this.loader.show();
-    this.isBorrowed=false
+    this.isBorrowed = false;
     borrowBook(this.http, this.api.rootUrl, { 'book-id': bookId }).subscribe({
       next: (res) => {
         console.log(res);
@@ -52,10 +55,41 @@ export class BookList implements OnInit {
         console.error(err);
         this.isBorrowed = true;
         this.errorMessage = err.error.error;
-        this.toast.show(this.errorMessage, "error");
+        this.toast.show(this.errorMessage, 'error');
         this.loader.hide();
       },
     });
+  }
+
+  findallBooks() {
+    this.loading = true;
+    this.errorMessage = '';
+    this.books = getAllBooks(this.http, this.api.rootUrl, {
+      page: this.page,
+      size: this.size,
+    });
+    this.books.subscribe({
+      next: (res) => {
+        this.booksResponse = res.body;
+      },
+    });
+  }
+
+  openBookDetailsDialog(bookId:number): void {
+    this.dialog
+      .open(BookDetailsComponent, {
+        width: '90%',
+        maxWidth: '95vw',
+        data:{
+          bookId:bookId
+        }
+      })
+      .afterClosed()
+      .subscribe((created) => {
+        if (created) {
+          this.findallBooks();
+        }
+      });
   }
 
   pervPage() {
@@ -84,19 +118,5 @@ export class BookList implements OnInit {
     }
     this.page = index;
     this.findallBooks();
-  }
-
-  findallBooks() {
-    this.loading = true;
-    this.errorMessage = '';
-    this.books = getAllBooks(this.http, this.api.rootUrl, {
-      page: this.page,
-      size: this.size,
-    });
-    this.books.subscribe({
-      next: (res) => {
-        this.booksResponse = res.body;
-      },
-    });
   }
 }

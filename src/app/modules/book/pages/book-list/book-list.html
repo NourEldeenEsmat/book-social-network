@@ -14,17 +14,15 @@
   <span>{{ errorMessage }}</span>
   <i class="fas fa-close" style="cursor: pointer;" (click)="errorMessage=''"></i>
 </div> -->
-<h3 style="margin-top: 60px">Books List</h3>
-<hr />
 <app-loader-componnent></app-loader-componnent>
-
 <ng-container *ngIf="books | async as books; else loadingTpl">
-  <div *ngIf="books.body.content?.length; else emptyTpl">
-    <div class="book-list gap-2">
+  <div *ngIf="books.body.content?.length; else emptyTpl" style="margin-top: 70px;">
+    <div class="book-list gap-2 d-flex">
       <app-book-card
         (borrow)="borrowBook(book.id!)"
         [book]="book"
         [isBorrowed]="isBorrowed"
+        (details)="openBookDetailsDialog(book.id!)"
         *ngFor="let book of books.body.content"
         class="book-item"
       ></app-book-card>

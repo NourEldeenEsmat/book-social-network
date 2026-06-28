@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Create a book</h2>
+
+<mat-dialog-content>
+  <form class="book-form" (ngSubmit)="submit()" #bookForm="ngForm">
+    <mat-label>Cover</mat-label>
+    <input type="file" accept="image/*" required (change)="previewImage($event)" />
+    <img id="cover" width="200px" alt="Cover preview" />
+    <mat-form-field appearance="outline" class="w-100 mt-2">
+      <mat-label>Title</mat-label>
+      <input matInput name="title" [(ngModel)]="book.title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Author</mat-label>
+      <input
+        matInput
+        name="authorName"
+        [(ngModel)]="book.authorName"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>ISBN</mat-label>
+      <input matInput name="isbn" [(ngModel)]="book.isbn" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Synopsis</mat-label>
+      <textarea
+        matInput
+        rows="2"
+        name="synopsis"
+        [(ngModel)]="book.synopsis"
+        required
+      ></textarea>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="book.shareable" name="shareable">
+      Shareable
+    </mat-checkbox>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="submitting"
+    (click)="submit()"
+  >
+    {{ submitting ? "Creating..." : "Create Book" }}
+  </button>
+</mat-dialog-actions>

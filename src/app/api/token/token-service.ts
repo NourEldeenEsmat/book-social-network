@@ -50,6 +50,35 @@ export class TokenService {
     return typeof username === 'string' ? username : null;
   }
 
+  public getUserIdFromToken(token?: string): number | null {
+    const actualToken = token ?? this.getToken();
+    if (!actualToken) {
+      return null;
+    }
+
+    const payload = this.parseToken(actualToken);
+    if (!payload) {
+      return null;
+    }
+
+    const claimNames = ['id', 'userId', 'user_id', 'uid', 'sub', 'nameid'];
+    for (const claimName of claimNames) {
+      const value = payload[claimName];
+      if (typeof value === 'number') {
+        return value;
+      }
+
+      if (typeof value === 'string') {
+        const parsedValue = Number(value);
+        if (!Number.isNaN(parsedValue)) {
+          return parsedValue;
+        }
+      }
+    }
+
+    return null;
+  }
+
   private padBase64(value: string): string {
     const padding = value.length % 4;
     return padding === 0 ? value : value + '='.repeat(4 - padding);
