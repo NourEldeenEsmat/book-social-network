@@ -1,0 +1,1 @@
+import{a as e}from"./chunk-XVIHSPEP.js";import"./chunk-PBWBUL45.js";import{n as m}from"./chunk-GT5U5EB2.js";import"./chunk-7J44WRRQ.js";import{X as t,fa as i,lc as r}from"./chunk-5DF23JUT.js";var n=class o{static \u0275fac=function(f){return new(f||o)};static \u0275mod=i({type:o});static \u0275inj=t({imports:[r,e,m]})};export{n as BookModule};
