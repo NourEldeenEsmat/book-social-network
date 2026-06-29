@@ -1,10 +1,17 @@
-<h2 mat-dialog-title>Create a book</h2>
+<h2 mat-dialog-title *ngIf="id == 0">Create a book</h2>
+<h2 mat-dialog-title *ngIf="id != 0">Update a book</h2>
 
 <mat-dialog-content>
   <form class="book-form" (ngSubmit)="submit()" #bookForm="ngForm">
-    <mat-label>Cover</mat-label>
-    <input type="file" accept="image/*" required (change)="previewImage($event)" />
+    <mat-label>Cover</mat-label><img [src]="bookCover" width="200">
+    <input
+      type="file"
+      accept="image/*"
+      required
+      (change)="previewImage($event)"
+    />
     <img id="cover" width="200px" alt="Cover preview" />
+    
     <mat-form-field appearance="outline" class="w-100 mt-2">
       <mat-label>Title</mat-label>
       <input matInput name="title" [(ngModel)]="book.title" required />
@@ -45,6 +52,7 @@
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">Cancel</button>
   <button
+    *ngIf="id == 0"
     mat-flat-button
     color="primary"
     type="submit"
@@ -52,5 +60,15 @@
     (click)="submit()"
   >
     {{ submitting ? "Creating..." : "Create Book" }}
+  </button>
+  <button
+    *ngIf="id != 0"
+    mat-flat-button
+    color="primary"
+    type="submit"
+    [disabled]="submitting"
+    (click)="submit()"
+  >
+    {{ submitting ? "Updating..." : "Update Book" }}
   </button>
 </mat-dialog-actions>

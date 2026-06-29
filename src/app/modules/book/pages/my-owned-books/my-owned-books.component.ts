@@ -11,6 +11,7 @@ import { NotificationService } from '../../../../common/Toast/notification-servi
 import { AddBookComponent } from '../../componnents/add-book/add-book.component';
 import { BookCard } from '../../componnents/book-card/book-card';
 import { LoaderComponnent } from '../../../../common/loader/loader-componnent/loader-componnent';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-owned-books',
@@ -32,6 +33,7 @@ export class MyOwnedBooksComponent implements OnInit {
     private loader: LoaderService,
     private toast: NotificationService,
     private tokenService: TokenService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +46,9 @@ export class MyOwnedBooksComponent implements OnInit {
       .open(AddBookComponent, {
         width: '560px',
         maxWidth: '95vw',
+        data:{
+          "bookId":0
+        }
       })
       .afterClosed()
       .subscribe((created) => {
@@ -53,8 +58,8 @@ export class MyOwnedBooksComponent implements OnInit {
       });
   }
 
-  closeDialog(){
-    this.dialog.closeAll()
+  closeDialog() {
+    this.dialog.closeAll();
   }
 
   loadMyBooks(): void {
@@ -104,5 +109,22 @@ export class MyOwnedBooksComponent implements OnInit {
     }
     this.page = index;
     this.loadMyBooks();
+  }
+
+  editBook(id: number | undefined) {
+     this.dialog
+      .open(AddBookComponent, {
+        width: '560px',
+        maxWidth: '95vw',
+        data:{
+          'bookId':id
+        }
+      })
+      .afterClosed()
+      .subscribe((created) => {
+        if (created) {
+          this.loadMyBooks();
+        }
+      });
   }
 }

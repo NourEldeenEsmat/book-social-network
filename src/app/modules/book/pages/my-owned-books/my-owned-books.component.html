@@ -16,6 +16,7 @@
       *ngFor="let book of booksResponse.content"
       [book]="book"
       [manage]="true"
+      (edit)="editBook(book.id)"
     ></app-book-card>
   </div>
   <nav

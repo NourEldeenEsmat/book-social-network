@@ -1,17 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ApiConfiguration } from '../../../../api/api-configuration';
-import { saveBook, updateCover } from '../../../../api/functions';
+import { findBookById, saveBook, updateCover } from '../../../../api/functions';
 import { BookRequest } from '../../../../api/models/book-request';
 import { LoaderService } from '../../../../common/loader/loader-serviec';
 import { NotificationService } from '../../../../common/Toast/notification-service';
+import { BookResponse } from '../../../../api/models/book-response';
 
 @Component({
   selector: 'app-add-book',
@@ -30,6 +35,7 @@ import { NotificationService } from '../../../../common/Toast/notification-servi
 })
 export class AddBookComponent {
   book: BookRequest = {
+    id: undefined,
     title: '',
     authorName: '',
     isbn: '',
@@ -38,6 +44,23 @@ export class AddBookComponent {
   };
   submitting = false;
   selectedImage: any;
+  id: number = 0;
+  private _bookCover: string = '';
+  bookResponse: BookResponse = {
+    id: 0,
+    title: '',
+    authorName: '',
+    isbn: '',
+    synopsis: '',
+    shareable: undefined,
+  };
+
+  public get bookCover(): string {
+    return this._bookCover;
+  }
+  public set bookCover(value: string) {
+    this._bookCover = 'data:image/jpg;base64,' + value;
+  }
 
   constructor(
     private dialogRef: MatDialogRef<AddBookComponent>,
@@ -45,9 +68,17 @@ export class AddBookComponent {
     private api: ApiConfiguration,
     private loader: LoaderService,
     private toast: NotificationService,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { bookId: number },
+  ) {
+    this.id = data.bookId;
+    if (this.id != 0) {
+      this.book.id = this.id;
+      this.getBook();
+    }
+  }
 
   submit(): void {
+    console.log(this.book);
     if (
       !this.book.title ||
       !this.book.authorName ||
@@ -71,7 +102,10 @@ export class AddBookComponent {
         }).subscribe({
           next: () => {
             this.loader.hide();
+            if(this.id==0)
             this.toast.show('Book created successfully.', 'success');
+          else
+            this.toast.show('Book updated successfully.', 'success');
             this.dialogRef.close(true);
           },
           error: (err) => {
@@ -114,5 +148,28 @@ export class AddBookComponent {
       coverImage.alt = file.name;
       coverImage.onload = () => URL.revokeObjectURL(imageUrl);
     }
+  }
+  getBook() {
+    this.loader.show();
+    console.log(this.data.bookId);
+    findBookById(this.http, this.api.rootUrl, {
+      'book-id': this.data.bookId,
+    }).subscribe({
+      next: (res) => {
+        this.bookResponse = res.body;
+        this._bookCover = 'data:image/jpg;base64,' + this.bookResponse.cover;
+        this.book.id = this.bookResponse.id;
+        this.book.authorName = this.bookResponse.authorName!;
+        this.book.synopsis = this.bookResponse.synopsis!;
+        this.book.isbn = this.bookResponse.isbn!;
+        this.book.shareable = this.bookResponse.shareable!;
+        this.book.title = this.bookResponse.title!;
+        this.loader.hide();
+      },
+      error: (err) => {
+        this.loader.hide();
+        this.toast.show(err, 'error');
+      },
+    });
   }
 }
