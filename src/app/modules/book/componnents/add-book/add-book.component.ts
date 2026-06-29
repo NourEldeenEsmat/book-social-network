@@ -102,10 +102,9 @@ export class AddBookComponent {
         }).subscribe({
           next: () => {
             this.loader.hide();
-            if(this.id==0)
-            this.toast.show('Book created successfully.', 'success');
-          else
-            this.toast.show('Book updated successfully.', 'success');
+            if (this.id == 0)
+              this.toast.show('Book created successfully.', 'success');
+            else this.toast.show('Book updated successfully.', 'success');
             this.dialogRef.close(true);
           },
           error: (err) => {

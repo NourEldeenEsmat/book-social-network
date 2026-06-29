@@ -3,14 +3,15 @@
 
 <mat-dialog-content>
   <form class="book-form" (ngSubmit)="submit()" #bookForm="ngForm">
-    <mat-label>Cover</mat-label><img [src]="bookCover" width="200">
+    <mat-label>Cover</mat-label>
+    <!-- <img [src]="bookCover" width="200"> -->
     <input
       type="file"
       accept="image/*"
       required
       (change)="previewImage($event)"
     />
-    <img id="cover" width="200px" alt="Cover preview" />
+    <img id="cover" width="200px" alt="Cover preview" [src]="bookCover"/>
     
     <mat-form-field appearance="outline" class="w-100 mt-2">
       <mat-label>Title</mat-label>
