@@ -1,0 +1,87 @@
+<div class="book-details">
+  <app-loader-componnent></app-loader-componnent>
+  <div class="card d-flex flex-row">
+    <i
+      class="fas fa-close"
+      style="position: absolute; top: 10px; right: 10px; color: red"
+      (click)="closeDialog()"
+    ></i>
+    <img [src]="bookCover" width="300" alt="" />
+    <div class="card-body">
+      <h5 class="card-title">Title : {{ bookResponse.title }}</h5>
+      <p class="card-text">Auther Name : {{ bookResponse.authorName }}</p>
+      <p class="card-text">SBIN : {{ bookResponse.isbn }}</p>
+      <p class="card-text">Synopsis : {{ bookResponse.synopsis }}</p>
+      <p class="card-text">Owner : {{ bookResponse.owner }}</p>
+      <p class="card-text">Shareable :{{ bookResponse.shareable }}</p>
+      <p class="card-text">Archived : {{ bookResponse.archived }}</p>
+      <div style="display: flex; flex-direction: row">
+        <app-rate
+          [rate]="bookResponse.rate!"
+          style="display: contents"
+        ></app-rate>
+        &nbsp;
+        <span style="color: gold">{{ bookResponse.rate }}</span>
+      </div>
+    </div>
+  </div>
+  <form>
+    <mat-dialog-actions align="start">
+      <label for="rateRange">Rate This Book </label>&nbsp;
+      <input
+        type="range"
+        name="rateRange"
+        max="5"
+        step="0.5"
+        [(ngModel)]="rateInput"
+      />
+      <p style="color: gold; margin: 5px; width: 25px">{{ rateInput }}</p>
+      <app-rate [rate]="rateInput"></app-rate>
+      <textarea
+        name="comment"
+        id="comment"
+        rows="1"
+        placeholder="write your comment"
+        style="
+          text-align: center;
+          width: 50%;
+          margin-left: 20px;
+          margin-right: 20px;
+        "
+        [(ngModel)]="feedback.comment"
+        required
+      ></textarea>
+      <button class="btn btn-primary" name="submit" (click)="submitFeedBack()">
+        Submit
+      </button>
+      <i
+        class="fas fa-comment-alt"
+        style="margin-left: 50px; cursor: pointer"
+        title="comments"
+        (click)="onComment()"
+      ></i>
+    </mat-dialog-actions>
+  </form>
+  <div
+    class="overflow-scroll"
+    style="height: 200px; margin: 20px"
+    *ngIf="commentVisable"
+  >
+    <div *ngFor="let i of comments">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">
+            <span>{{ i.comment }}</span>
+          </h3>
+          <p class="card-text d-flex">
+            Rate :&nbsp;<app-rate
+              [rate]="i.note!"
+              style="display: contents"
+            ></app-rate>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 01016727262 -->
